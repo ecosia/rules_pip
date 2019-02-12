@@ -30,13 +30,13 @@ _pytest_main = rule(
     },
 )
 
-def pytest_test(name, src, python_version = 3, **kwargs):
-    if python_version == 2:
-        interpreter = PYTHON2
-        pytest_dep = "@pip2//pytest"
-    elif python_version == 3:
-        interpreter = PYTHON3
-        pytest_dep = "@pip3//pytest"
+def pytest_test(name, src, python_version = "PY3", **kwargs):
+    if python_version == "PY2":
+        interpreter = kwargs.pop("interpreter_path", PYTHON2)
+        pytest_dep = kwargs.pop("pytest_dep", "@pip2//pytest")
+    elif python_version == "PY3":
+        interpreter = kwargs.pop("interpreter_path", PYTHON3)
+        pytest_dep = kwargs.pop("pytest_dep", "@pip3//pytest")
     else:
         fail("Python version must be 2 or 3")
 
@@ -56,5 +56,6 @@ def pytest_test(name, src, python_version = 3, **kwargs):
         srcs = [main_output, src],
         main = main_output,
         deps = deps,
+        python_version = python_version,
         **kwargs
     )

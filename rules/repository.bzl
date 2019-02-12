@@ -70,7 +70,7 @@ pip_repository = repository_rule(
         "environment": attr.string_dict(default = {
             "SOURCE_DATE_EPOCH": "1549987370",
         }),
-        "quiet": attr.bool(default = False),
+        "quiet": attr.bool(default = True),
         "_create_repo_exe": attr.label(
             default = "//tools:create_pip_repository.par",
             executable = True,

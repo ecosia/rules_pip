@@ -5,55 +5,55 @@ pytest_test(
     name = "dependency_deduplication_test_2",
     src = "dependency_deduplication_test.py",
     deps = ["@pip2//isort"],
-    python_version = 2,
+    python_version = "PY2",
 )
 
 pytest_test(
     name = "dependency_deduplication_test_3",
     src = "dependency_deduplication_test.py",
     deps = ["@pip3//isort"],
-    python_version = 3,
+    python_version = "PY3",
 )
 
 pytest_test(
     name = "mock_test_2",
     src = "mock_test.py",
     deps = ["@pip2//pytest_mock"],
-    python_version = 2,
+    python_version = "PY2",
 )
 
 pytest_test(
     name = "mock_test_3",
     src = "mock_test.py",
     deps = ["@pip3//pytest_mock"],
-    python_version = 3,
+    python_version = "PY3",
 )
 
 pytest_test(
     name = "pathlib_test_2",
     src = "pathlib_test.py",
     deps = ["@pip2//pathlib2"],
-    python_version = 2,
+    python_version = "PY2",
 )
 
 pytest_test(
     name = "pathlib_test_3",
     src = "pathlib_test.py",
-    python_version = 3,
+    python_version = "PY3",
 )
 
 pytest_test(
     name = "pyyaml_test_2",
     src = "pyyaml_test.py",
     deps = ["@pip2//pyyaml"],
-    python_version = 2,
+    python_version = "PY2",
 )
 
 pytest_test(
     name = "pyyaml_test_3",
     src = "pyyaml_test.py",
     deps = ["@pip3//pyyaml"],
-    python_version = 3,
+    python_version = "PY3",
 )
 
 genrule(
@@ -108,5 +108,5 @@ pytest_test(
         ":test-yin-2",
         ":test-yin-3",
     ],
-    python_version = 3,
+    python_version = "PY3",
 )

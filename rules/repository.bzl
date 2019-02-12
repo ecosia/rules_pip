@@ -32,12 +32,25 @@ def _pip_repository_impl(repo_ctx):
             attr = "pip_repository",
         )
 
-    repo_ctx.execute([
-        repo_ctx.attr.python_interpreter,
-        create_repo_exe_path,
-        repo_directory,
-        requirements_path,
-    ] + repo_ctx.attr.wheel_args)
+    wheel_cache = repo_ctx.os.environ.get("BAZEL_PIP_CACHE", repo_ctx.attr.wheel_cache)
+
+    r = repo_ctx.execute(
+        [
+            repo_ctx.attr.python_interpreter,
+            create_repo_exe_path,
+            repo_ctx.attr.python_interpreter,
+            wheel_cache,
+            # The build directory is needed for deterministic wheel builds
+            repo_ctx.attr.wheel_build_dir,
+            repo_directory,
+            requirements_path,
+        ] + repo_ctx.attr.wheel_args,
+        environment = repo_ctx.attr.environment,
+        quiet = repo_ctx.attr.quiet,
+    )
+
+    if r.return_code:
+        fail(r.stderr)
 
 pip_repository = repository_rule(
     implementation = _pip_repository_impl,
@@ -49,8 +62,15 @@ pip_repository = repository_rule(
             allow_files = True,
             allow_empty = False,
         ),
-        "python_interpreter": attr.string(default = "python"),
+        "python_interpreter": attr.string(default = "python3"),
+        "wheel_build_dir": attr.string(default = "/tmp/pip-build"),
         "wheel_args": attr.string_list(),
+        "wheel_cache": attr.string(),
+        # SOURCE_DATE_EPOCH is needed for reproducible wheel builds
+        "environment": attr.string_dict(default = {
+            "SOURCE_DATE_EPOCH": "1549987370",
+        }),
+        "quiet": attr.bool(default = False),
         "_create_repo_exe": attr.label(
             default = "//tools:create_pip_repository.par",
             executable = True,

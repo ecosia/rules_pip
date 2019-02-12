@@ -5,13 +5,16 @@ from piprules import bazel, wheels
 
 def main():
     args, extra_args = parse_args()
-    wheels.download(args.repository_directory, args.requirements, *extra_args)
+    wheels.download(args.python_interpreter, args.cache_directory, args.build_directory, args.repository_directory, args.requirements, *extra_args)
     unpack_wheels_into_bazel_packages(args.repository_directory)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument("python_interpreter")
+    parser.add_argument("cache_directory")
+    parser.add_argument("build_directory")
     parser.add_argument("repository_directory")
     parser.add_argument("requirements")
 

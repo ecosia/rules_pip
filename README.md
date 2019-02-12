@@ -18,3 +18,7 @@ load("@com_apt_itude_rules_pip//rules:dependencies.bzl", "pip_rules_dependencies
 
 pip_rules_dependencies()
 ```
+
+## Example
+
+There is a small example to show how these rules can be used: https://github.com/Globegitter/rules_pip_example

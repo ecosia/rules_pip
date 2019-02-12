@@ -52,6 +52,7 @@ pip_repository(
         "//thirdparty/pip/2:requirements-osx.txt": "osx",
     },
     # quiet = False,
+    wheel_cache = "~/.cache/bazel/wheels"
 )
 
 pip_repository(
@@ -62,4 +63,5 @@ pip_repository(
         "//thirdparty/pip/3:requirements-osx.txt": "osx",
     },
     # quiet = False,
+    wheel_cache = "~/.cache/bazel/wheels"
 )

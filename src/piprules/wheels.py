@@ -44,6 +44,18 @@ def _check_offline_cache(cache_directory, build_directory, dest_directory, requi
 
     return True
 
+def hardlink_cache(cache_directory, dest_directory):
+    cache_directory = os.path.expanduser(cache_directory)
+
+    try:
+        os.makedirs(cache_directory)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
+
+    for f in (f for f in os.listdir(dest_directory) if path.isfile(path.join(dest_directory, f)) and f.endswith(".whl")):
+        os.link(path.join(dest_directory, f), path.join(cache_directory, f))
+
 def download(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
     if cache_directory:
         cached = _check_offline_cache(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args)
@@ -63,16 +75,8 @@ def download(python_interperter, cache_directory, build_directory, dest_director
             if return_code > 0:
                 sys.exit(return_code)
 
-        cache_directory = os.path.expanduser(cache_directory)
-
-        try:
-            os.makedirs(cache_directory)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
-
-        for f in (f for f in os.listdir(dest_directory) if path.isfile(path.join(dest_directory, f)) and f.endswith(".whl")):
-            os.link(path.join(dest_directory, f), path.join(cache_directory, f))
+        if cache_directory:
+            hardlink_cache()
 
 
 @contextlib.contextmanager

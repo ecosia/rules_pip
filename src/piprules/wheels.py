@@ -11,7 +11,6 @@ from os import path
 import pip
 from pip._internal import main as pip_main
 from wheel import wheelfile
-from six.moves import reload_module
 
 from piprules import util
 
@@ -31,7 +30,7 @@ def _check_offline_cache(cache_directory, build_directory, dest_directory, requi
     # Have to run pip in a subprocess here as it can not be called twice in the same process
     result = subprocess.run(
         [
-            "python3", util.get_import_path_of_module(pip) + "/pip/__main__.py",
+            python_interperter, util.get_import_path_of_module(pip) + "/pip/__main__.py",
             "wheel",
             "--no-index",
             "--find-links", cache_directory,
@@ -45,10 +44,12 @@ def _check_offline_cache(cache_directory, build_directory, dest_directory, requi
 
     return True
 
-def download(cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
-    cached = _check_offline_cache(cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args)
+def download(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
+    if cache_directory:
+        cached = _check_offline_cache(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args)
+    else:
+        cached = False
     if not cached:
-        reload_module(pip._internal)
         with _add_pip_import_paths_to_pythonpath():
             return_code = pip._internal.main(
                 args=[

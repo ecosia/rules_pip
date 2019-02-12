@@ -32,11 +32,14 @@ def _pip_repository_impl(repo_ctx):
             attr = "pip_repository",
         )
 
+    wheel_cache = repo_ctx.os.environ.get("BAZEL_PIP_CACHE", repo_ctx.attr.wheel_cache)
+
     r = repo_ctx.execute(
         [
             repo_ctx.attr.python_interpreter,
             create_repo_exe_path,
-            "~/.cache/bazel/wheels",
+            repo_ctx.attr.python_interpreter,
+            wheel_cache,
             # The build directory is needed for deterministic wheel builds
             repo_ctx.attr.wheel_build_dir,
             repo_directory,
@@ -62,6 +65,8 @@ pip_repository = repository_rule(
         "python_interpreter": attr.string(default = "python3"),
         "wheel_build_dir": attr.string(default = "/tmp/pip-build"),
         "wheel_args": attr.string_list(),
+        "wheel_cache": attr.string(),
+        # SOURCE_DATE_EPOCH is needed for reproducible wheel builds
         "environment": attr.string_dict(default = {
             "SOURCE_DATE_EPOCH": "1549987370",
         }),

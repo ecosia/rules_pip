@@ -51,6 +51,7 @@ pip_repository(
         "//thirdparty/pip/2:requirements-linux.txt": "linux",
         "//thirdparty/pip/2:requirements-osx.txt": "osx",
     },
+    # quiet = False,
 )
 
 pip_repository(
@@ -60,4 +61,5 @@ pip_repository(
         "//thirdparty/pip/3:requirements-linux.txt": "linux",
         "//thirdparty/pip/3:requirements-osx.txt": "osx",
     },
+    # quiet = False,
 )

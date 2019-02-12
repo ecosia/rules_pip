@@ -23,26 +23,26 @@ py_library(
 def pip_rules_dependencies():
     _remote_wheel(
         name = "pip",
-        url = "https://files.pythonhosted.org/packages/c2/d7/90f34cb0d83a6c5631cf71dfe64cc1054598c843a92b400e55675cc2ac37/pip-18.1-py2.py3-none-any.whl",
-        sha256 = "7909d0a0932e88ea53a7014dfd14522ffef91a464daaaf5c573343852ef98550",
+        url = "https://files.pythonhosted.org/packages/d7/41/34dd96bd33958e52cb4da2f1bf0818e396514fd4f4725a79199564cd0c20/pip-19.0.2-py2.py3-none-any.whl",
+        sha256 = "6a59f1083a63851aeef60c7d68b119b46af11d9d803ddc1cf927b58edcd0b312",
     )
 
     _remote_wheel(
         name = "setuptools",
-        url = "https://files.pythonhosted.org/packages/96/06/c8ee69628191285ddddffb277bd5abdf769166e7a14b867c2a172f0175b1/setuptools-40.4.3-py2.py3-none-any.whl",
-        sha256 = "ce4137d58b444bac11a31d4e0c1805c69d89e8ed4e91fde1999674ecc2f6f9ff",
+        url = "https://files.pythonhosted.org/packages/d1/6a/4b2fcefd2ea0868810e92d519dacac1ddc64a2e53ba9e3422c3b62b378a6/setuptools-40.8.0-py2.py3-none-any.whl",
+        sha256 = "e8496c0079f3ac30052ffe69b679bd876c5265686127a3159cfa415669b7f9ab",
     )
 
     _remote_wheel(
         name = "wheel",
-        url = "https://files.pythonhosted.org/packages/fc/e9/05316a1eec70c2bfc1c823a259546475bd7636ba6d27ec80575da523bc34/wheel-0.32.1-py2.py3-none-any.whl",
-        sha256 = "9fa1f772f1a2df2bd00ddb4fa57e1cc349301e1facb98fbe62329803a9ff1196",
+        url = "https://files.pythonhosted.org/packages/7c/d7/20bd3c501f53fdb0b7387e75c03bd1fce748a1c3dd342fc53744e28e3de1/wheel-0.33.0-py2.py3-none-any.whl",
+        sha256 = "b79ffea026bc0dbd940868347ae9eee36789b6496b6623bd2dec7c7c540a8f99",
     )
 
     _remote_wheel(
         name = "pip_tools",
-        url = "https://files.pythonhosted.org/packages/f7/58/7a3c61ff7ea45cf0f13f3c58c5261c598a1923efa3327494f70c2d532cba/pip_tools-3.1.0-py2.py3-none-any.whl",
-        sha256 = "31b43e5f8d605fc84f7506199025460abcb98a29d12cc99db268f73e39cf55e5",
+        url = "https://files.pythonhosted.org/packages/76/ed/30cff57d96584264a3f2d607f2f6b9ec6d877919b1ffd2227d245ebb96ed/pip_tools-3.3.2-py2.py3-none-any.whl",
+        sha256 = "8a170214f8f1f362ed4ba7c51dae3c7d334d88e2643c02da39c9654c71ab5b33",
     )
 
     _remote_wheel(
@@ -53,8 +53,8 @@ def pip_rules_dependencies():
 
     _remote_wheel(
         name = "six",
-        url = "https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl",
-        sha256 = "832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb",
+        url = "https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl",
+        sha256 = "3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c",
     )
 
     _ensure_rule_exists(

@@ -8,7 +8,6 @@ import re
 import subprocess
 from os import path
 
-import pip
 from pip._internal import main as pip_main
 from wheel import wheelfile
 
@@ -25,18 +24,22 @@ def _create_no_hash_requirements_file(requirements_file_path):
             for line in fin:
                 fout.write(regex.sub("", line))
 
-def _check_offline_cache(cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
+def _check_offline_cache(python_interpreter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
     _create_no_hash_requirements_file(requirements_file_path)
     # Have to run pip in a subprocess here as it can not be called twice in the same process
+    import_paths = _get_pip_import_paths()
+    my_env = os.environ.copy()
+    my_env["PYTHONPATH"] = ":".join(import_paths) + ":" + my_env.get("PYTHONPATH", "")
     result = subprocess.run(
         [
-            python_interperter, util.get_import_path_of_module(pip) + "/pip/__main__.py",
+            python_interpreter, util.get_import_path_of_module(pip) + "/pip/__main__.py",
             "wheel",
             "--no-index",
             "--find-links", cache_directory,
             "-w", dest_directory,
             "-r", requirements_file_path[:-4] + "_no_hash.txt",
-        ]
+        ],
+        env=my_env,
     )
     os.remove(requirements_file_path[:-4] + "_no_hash.txt")
     if result.returncode != 0:
@@ -54,11 +57,15 @@ def hardlink_cache(cache_directory, dest_directory):
             raise
 
     for f in (f for f in os.listdir(dest_directory) if path.isfile(path.join(dest_directory, f)) and f.endswith(".whl")):
-        os.link(path.join(dest_directory, f), path.join(cache_directory, f))
+        try:
+            os.link(path.join(dest_directory, f), path.join(cache_directory, f))
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                raise
 
-def download(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
+def download(python_interpreter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args):
     if cache_directory:
-        cached = _check_offline_cache(python_interperter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args)
+        cached = _check_offline_cache(python_interpreter, cache_directory, build_directory, dest_directory, requirements_file_path, *extra_args)
     else:
         cached = False
     if not cached:
@@ -76,16 +83,18 @@ def download(python_interperter, cache_directory, build_directory, dest_director
                 sys.exit(return_code)
 
         if cache_directory:
-            hardlink_cache()
+            hardlink_cache(cache_directory, dest_directory)
 
-
-@contextlib.contextmanager
-def _add_pip_import_paths_to_pythonpath():
+def _get_pip_import_paths():
     import pip
     import setuptools
     import wheel
 
-    import_paths = [util.get_import_path_of_module(m) for m in [pip, setuptools, wheel]]
+    return [util.get_import_path_of_module(m) for m in [pip, setuptools, wheel]]
+
+@contextlib.contextmanager
+def _add_pip_import_paths_to_pythonpath():
+    import_paths = _get_pip_import_paths()
     with util.prepend_to_pythonpath(import_paths):
         yield
 

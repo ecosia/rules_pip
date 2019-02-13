@@ -32,7 +32,13 @@ def _pip_repository_impl(repo_ctx):
             attr = "pip_repository",
         )
 
-    wheel_cache = repo_ctx.os.environ.get("BAZEL_PIP_CACHE", repo_ctx.attr.wheel_cache)
+    wheel_cache = repo_ctx.attr.wheel_cache or repo_ctx.os.environ.get("BAZEL_PIP_CACHE", "")
+    # SOURCE_DATE_EPOCH of is needed for reproducible wheel builds
+    # A date of at least 01.01.1980 is needed due to the python zip library
+    environment = {
+        "SOURCE_DATE_EPOCH": "315532800",
+    }
+    environment.update(repo_ctx.attr.environment)
 
     r = repo_ctx.execute(
         [
@@ -45,7 +51,7 @@ def _pip_repository_impl(repo_ctx):
             repo_directory,
             requirements_path,
         ] + repo_ctx.attr.wheel_args,
-        environment = repo_ctx.attr.environment,
+        environment = environment,
         quiet = repo_ctx.attr.quiet,
     )
 
@@ -66,10 +72,7 @@ pip_repository = repository_rule(
         "wheel_build_dir": attr.string(default = "/tmp/pip-build"),
         "wheel_args": attr.string_list(),
         "wheel_cache": attr.string(),
-        # SOURCE_DATE_EPOCH is needed for reproducible wheel builds
-        "environment": attr.string_dict(default = {
-            "SOURCE_DATE_EPOCH": "1549987370",
-        }),
+        "environment": attr.string_dict(),
         "quiet": attr.bool(default = True),
         "_create_repo_exe": attr.label(
             default = "//tools:create_pip_repository.par",

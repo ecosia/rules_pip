@@ -61,14 +61,16 @@ def pip_rules_dependencies():
         git_repository,
         name = "bazel_skylib",
         remote = "https://github.com/bazelbuild/bazel-skylib.git",
-        tag = "0.5.0",
+        commit = "3721d32c14d3639ff94320c780a60a6e658fb033", # tag = "0.8.0"
+        shallow_since = "1553102012 +0100",
     )
 
     _ensure_rule_exists(
         git_repository,
         name = "subpar",
         remote = "https://github.com/google/subpar",
-        tag = "1.3.0",
+        commit = "a25a2f2f9a0a491346df78e933e777d2af76ac27", # master as of 09-05-2019
+        shallow_since = "1557424845 -0400",
     )
 
 def _remote_wheel(name, url, sha256):

@@ -39,7 +39,7 @@ def replace_shebang(input_path, output_path, interpreter):
 
 
 def make_shebang(interpreter):
-    return f"#!/usr/bin/env {interpreter}"
+    return "#!/usr/bin/env {}".format(interpreter)
 
 
 if __name__ == "__main__":

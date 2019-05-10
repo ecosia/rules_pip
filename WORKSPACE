@@ -12,18 +12,20 @@ pip_rules_dependencies()
 
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "7be7dc01f1e0afdba6c8eb2b43d2fa01c743be1b9273ab1eaf6c233df078d705",
-    url = "https://github.com/bazelbuild/rules_go/releases/download/0.16.5/rules_go-0.16.5.tar.gz",
+    urls = ["https://github.com/bazelbuild/rules_go/archive/0.18.4.tar.gz"],
+    strip_prefix = "rules_go-0.18.4",
+    sha256 = "fb8efea4020f484f9a2b20806d4129d5dc6c50b559f550f89da7fb5153217ab0",
 )
 
 http_archive(
     name = "com_github_bazelbuild_buildtools",
-    strip_prefix = "buildtools-0.15.0",
-    url = "https://github.com/bazelbuild/buildtools/archive/0.15.0.zip",
+    urls = ["https://github.com/bazelbuild/buildtools/archive/0.25.0.tar.gz"],
+    strip_prefix = "buildtools-0.25.0",
+    sha256 = "3d934630a7ece3a018eec29573705b999020923e9741f64dcee78b7e7fa4555e",
 )
 
 load(
-    "@io_bazel_rules_go//go:def.bzl",
+    "@io_bazel_rules_go//go:deps.bzl",
     "go_register_toolchains",
     "go_rules_dependencies",
 )

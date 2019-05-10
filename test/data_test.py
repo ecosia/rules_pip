@@ -1,7 +1,9 @@
 import pytest
 
 
-@pytest.mark.parametrize("python_version", [2, 3])
+# TODO: Python 2 is not supported right now in genrules. See: https://github.com/bazelbuild/bazel/issues/6443
+# @pytest.mark.parametrize("python_version", [2, 3])
+@pytest.mark.parametrize("python_version", [3])
 def test_output(python_version):
     path = "test/ietf-yang-metadata-{}.yin".format(python_version)
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env @@INTERPRETER@@
-
 import sys
 
 import pytest
@@ -7,7 +5,7 @@ import pytest
 
 def main():
     args = sys.argv[1:]
-    args.append("@@TEST_PATH@@")
+    print(args)
 
     sys.exit(pytest.main(args))
 

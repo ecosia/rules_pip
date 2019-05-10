@@ -30,7 +30,7 @@ _pytest_main = rule(
     },
 )
 
-def pytest_test(name, src, python_version = "PY3", **kwargs):
+def pytest_test(name, srcs, python_version = "PY3", **kwargs):
     if python_version == "PY2":
         interpreter = kwargs.pop("interpreter_path", PYTHON2)
         pytest_dep = kwargs.pop("pytest_dep", "@pip2//pytest")
@@ -43,6 +43,12 @@ def pytest_test(name, src, python_version = "PY3", **kwargs):
     main_name = "%s_main" % name
     main_output = ":%s.py" % main_name
 
+    native.py_binary(
+        name = main_name,
+        srcs = [src],
+        main 
+    )
+
     _pytest_main(
         name = main_name,
         src = src,
@@ -53,7 +59,7 @@ def pytest_test(name, src, python_version = "PY3", **kwargs):
 
     native.py_test(
         name = name,
-        srcs = [main_output, src],
+        srcs = [main_output] + srcs,
         main = main_output,
         deps = deps,
         python_version = python_version,

@@ -41,8 +41,8 @@ def pip_rules_dependencies():
 
     _remote_wheel(
         name = "pip_tools",
-        url = "https://files.pythonhosted.org/packages/76/ed/30cff57d96584264a3f2d607f2f6b9ec6d877919b1ffd2227d245ebb96ed/pip_tools-3.3.2-py2.py3-none-any.whl",
-        sha256 = "8a170214f8f1f362ed4ba7c51dae3c7d334d88e2643c02da39c9654c71ab5b33",
+        url = "https://files.pythonhosted.org/packages/96/43/34412d316bdbf1cd9c9a0e487138b40db4e1e11212cee2d46440b6b49b08/pip_tools-3.7.0-py2.py3-none-any.whl",
+        sha256 = "4ff38ab655bec47db2d5a82fa6c6807e231ecddf3b7cbb2f2b957a9b11f016c3",
     )
 
     _remote_wheel(

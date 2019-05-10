@@ -58,19 +58,19 @@ def pip_rules_dependencies():
     )
 
     _ensure_rule_exists(
-        git_repository,
+        http_archive,
         name = "bazel_skylib",
-        remote = "https://github.com/bazelbuild/bazel-skylib.git",
-        commit = "3721d32c14d3639ff94320c780a60a6e658fb033", # tag = "0.8.0"
-        shallow_since = "1553102012 +0100",
+        urls = ["https://github.com/bazelbuild/bazel-skylib/archive/3721d32c14d3639ff94320c780a60a6e658fb033.tar.gz"],
+        strip_prefix = "bazel-skylib-3721d32c14d3639ff94320c780a60a6e658fb033",
+        sha256 = "6b6ef4f707252c55b6109f02f4322f5219c7467b56bff8587876681ad067e57b",
     )
 
     _ensure_rule_exists(
-        git_repository,
+        http_archive,
         name = "subpar",
-        remote = "https://github.com/google/subpar",
-        commit = "a25a2f2f9a0a491346df78e933e777d2af76ac27", # master as of 09-05-2019
-        shallow_since = "1557424845 -0400",
+        urls = ["https://github.com/google/subpar/archive/a25a2f2f9a0a491346df78e933e777d2af76ac27.tar.gz"],
+        strip_prefix = "subpar-a25a2f2f9a0a491346df78e933e777d2af76ac27",
+        sha256 = "31cb6a17fdcfc747d7ee1748b3e4e067b49112b3466c402561fd29ca2e03e9f7",
     )
 
 def _remote_wheel(name, url, sha256):

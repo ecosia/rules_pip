@@ -91,6 +91,7 @@ class _PyDistPackageGenerator(object):
             py_binary(
                 name = "{rule}",
                 srcs = ["bin/{entry_point}.py"],
+                main = "bin/{entry_point}.py",
                 deps = [":{library_name}"],
                 visibility = ["//visibility:public"],
             )

@@ -1,3 +1,8 @@
+load(
+    "@bazel_tools//tools/build_defs/repo:utils.bzl",
+    "patch",
+)
+
 def _get_platform(repo_ctx):
     if "mac" in repo_ctx.os.name:
         return "osx"
@@ -58,6 +63,8 @@ def _pip_repository_impl(repo_ctx):
     if r.return_code:
         fail(r.stderr)
 
+    patch(repo_ctx)
+
 pip_repository = repository_rule(
     implementation = _pip_repository_impl,
     attrs = {
@@ -74,6 +81,24 @@ pip_repository = repository_rule(
         "wheel_cache": attr.string(),
         "environment": attr.string_dict(),
         "quiet": attr.bool(default = True),
+        "patches": attr.label_list(
+            default = [],
+            doc =
+            "A list of files that are to be applied as patches afer " +
+            "extracting the archive.",
+        ),
+        "patch_tool": attr.string(
+            default = "patch",
+            doc = "The patch(1) utility to use.",
+        ),
+        "patch_args": attr.string_list(
+            default = ["-p0"],
+            doc = "The arguments given to the patch tool",
+        ),
+        "patch_cmds": attr.string_list(
+            default = [],
+            doc = "Sequence of commands to be applied after patches are applied.",
+        ),
         "_create_repo_exe": attr.label(
             default = "//tools:create_pip_repository.par",
             executable = True,

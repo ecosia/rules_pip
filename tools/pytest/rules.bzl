@@ -41,27 +41,16 @@ def pytest_test(name, srcs, python_version = "PY3", **kwargs):
         fail("Python version must be 2 or 3")
 
     main_name = "%s_main" % name
-    main_output = ":%s.py" % main_name
+    main_output = "%s.py" % main_name
 
-    native.py_binary(
-        name = main_name,
-        srcs = [src],
-        main 
-    )
-
-    _pytest_main(
-        name = main_name,
-        src = src,
-        interpreter = interpreter,
-    )
-
-    deps = kwargs.pop("deps", []) + [pytest_dep]
+    deps = kwargs.pop("deps", [])#  + [pytest_dep]
 
     native.py_test(
         name = name,
-        srcs = [main_output] + srcs,
-        main = main_output,
+        srcs = ["@pip3//pytest:py.test"] + srcs,
+        main = "py.test.py",
         deps = deps,
         python_version = python_version,
+        args = ["$(location " + srcs[0] + ")"],
         **kwargs
     )
